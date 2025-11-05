@@ -202,7 +202,7 @@ element.scrollIntoView({ behavior: "smooth" });
 
 ## 🔗 Live Demo
 
-🌐 **Live on Vercel:** [xx](xx)
+🌐 **Live on Vercel:** [https://game-verse-mocha.vercel.app/](https://game-verse-mocha.vercel.app/)
 
 
 ## 📄 License
