@@ -1,7 +1,7 @@
 import { Listbox } from "@headlessui/react";
 import clsx from "clsx";
 import { CheckIcon } from "lucide-react";
-import { Fragment, ReactElement } from "react";
+import { Fragment, type ReactElement } from "react";
 
 type Option = {
   id: number;

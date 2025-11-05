@@ -3,7 +3,7 @@ import { GamesGallery } from "../sections/Gallery";
 import { HeroSection } from "../sections/Hero";
 
 
-export const Home = () => {
+export const HomePage = () => {
   return (
     <div className="w-full min-h-screen bg-neutral-50">
         <HeroSection />

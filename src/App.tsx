@@ -6,9 +6,9 @@ import { ScrollToTop } from "./layout/ScrollToTop";
 import { About } from "./paths/About";
 import { ContactPage } from "./paths/ContactPage";
 import { AuthPage } from "./paths/AuthPage";
-import { Home } from "./paths/home";
 import { FAQPage } from "./paths/FAQPage";
 import { Cart } from "./paths/Cart";
+import { HomePage } from "./paths/HomePage";
 
 type PageWrapperProps = {
   children: React.ReactNode;
@@ -34,7 +34,7 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
       <Route element={<Layout />}>
-        <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
+        <Route path="/" element={<PageWrapper><HomePage /></PageWrapper>} />
         <Route path="/auth-page" element={<PageWrapper><AuthPage /></PageWrapper>} />
         <Route path="/contact-page" element={<PageWrapper><ContactPage /></PageWrapper>} />
         <Route path="/about-page" element={<PageWrapper><About /></PageWrapper>} />
