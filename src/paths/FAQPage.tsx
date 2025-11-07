@@ -1,6 +1,10 @@
+// FAQ page - displays frequently asked questions organized by categories with accordion functionality
+// Users can expand/collapse individual questions to view answers
+
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
+// Type definition for individual FAQ items
 type FAQItem = {
   id: number;
   question: string;
@@ -8,8 +12,9 @@ type FAQItem = {
   category: "general" | "payment" | "support" | "account";
 };
 
+// FAQ data array - contains all questions, answers, and their categories
 const faqData: FAQItem[] = [
-  // General
+  // General Category Questions
   {
     id: 1,
     category: "general",
@@ -32,7 +37,7 @@ const faqData: FAQItem[] = [
       "Yes, GameVerse is 100% legal and secure. We work directly with publishers and developers, and all transactions are encrypted for your safety.",
   },
 
-  // Payment
+  // Payment Category Questions
   {
     id: 4,
     category: "payment",
@@ -55,7 +60,7 @@ const faqData: FAQItem[] = [
       "Yes! We regularly offer discounts, bundle deals, and seasonal sales. Subscribe to our newsletter to get exclusive offers and early access to sales.",
   },
 
-  // Support
+  // Support Category Questions
   {
     id: 7,
     category: "support",
@@ -78,7 +83,7 @@ const faqData: FAQItem[] = [
       "We provide support for purchase-related issues. For game-specific technical issues, please contact the game's publisher or developer support team.",
   },
 
-  // Account
+  // Account Category Questions
   {
     id: 10,
     category: "account",
@@ -102,6 +107,7 @@ const faqData: FAQItem[] = [
   },
 ];
 
+// Object mapping category keys to display labels with emojis
 const categoryLabels = {
   general: "🎮 General",
   payment: "💳 Payment",
@@ -109,31 +115,45 @@ const categoryLabels = {
   account: "👤 Account",
 };
 
+// Main FAQ accordion component - handles state and rendering of accordion items
 const FAQAccordion = () => {
+  // Track which accordion item is currently expanded
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
+  // Toggle accordion item open/closed when clicked
   const toggleAccordion = (id: number) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
-  const renderByCategory = (category: "general" | "payment" | "support" | "account") => {
+  // Render FAQ items for a specific category
+  // Filters faqData by category and renders accordion items for that category
+  const renderByCategory = (
+    category: "general" | "payment" | "support" | "account"
+  ) => {
     const items = faqData.filter((item) => item.category === category);
     return (
       <div key={category} className="mb-12">
+        {/* Category heading with emoji icon */}
         <h2 className="text-2xl font-bold text-yellow-400 mb-6 flex items-center gap-2">
           {categoryLabels[category]}
         </h2>
+
+        {/* Accordion items for this category */}
         <div className="space-y-3">
           {items.map((item) => (
             <div
               key={item.id}
               className="bg-neutral-800 rounded-lg border border-neutral-700 hover:border-cyan-400/50 transition overflow-hidden"
             >
+              {/* Accordion header - question and chevron icon */}
               <button
                 onClick={() => toggleAccordion(item.id)}
                 className="w-full flex items-center justify-between p-5 hover:bg-neutral-700/50 transition focus:outline-none"
               >
-                <span className="font-semibold text-left text-white">{item.question}</span>
+                <span className="font-semibold text-left text-white">
+                  {item.question}
+                </span>
+                {/* Chevron icon rotates 180 degrees when expanded */}
                 <FaChevronDown
                   size={16}
                   className={`text-cyan-400 transition-transform flex-shrink-0 ${
@@ -141,6 +161,8 @@ const FAQAccordion = () => {
                   }`}
                 />
               </button>
+
+              {/* Accordion content - answer displayed only when expanded */}
               {expandedId === item.id && (
                 <div className="px-5 pb-5 border-t border-neutral-700">
                   <p className="text-gray-300 leading-relaxed">{item.answer}</p>
@@ -155,7 +177,7 @@ const FAQAccordion = () => {
 
   return (
     <section className="w-full bg-gray-950 text-white">
-      {/* Hero Section */}
+      {/* Hero Section with gradient background and page title */}
       <div className="relative h-80 overflow-hidden flex items-center justify-center bg-gradient-to-br from-cyan-600 via-indigo-700 to-purple-800">
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="relative z-10 text-center px-6">
@@ -163,32 +185,37 @@ const FAQAccordion = () => {
             Frequently Asked Questions
           </h1>
           <p className="text-xl text-neutral-200 max-w-2xl mx-auto">
-            Find answers to common questions about GameVerse, purchases, and more.
+            Find answers to common questions about GameVerse, purchases, and
+            more.
           </p>
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main Content Area */}
       <div className="px-6 sm:px-12 md:px-20 py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
-          {/* General FAQs */}
+          {/* General FAQs Section */}
           {renderByCategory("general")}
 
-          {/* Payment FAQs */}
+          {/* Payment FAQs Section */}
           {renderByCategory("payment")}
 
-          {/* Support FAQs */}
+          {/* Support FAQs Section */}
           {renderByCategory("support")}
 
-          {/* Account FAQs */}
+          {/* Account FAQs Section */}
           {renderByCategory("account")}
 
-          {/* Still Need Help Section */}
+          {/* Call-to-Action Section - For users who didn't find their answer */}
           <div className="mt-16 p-8 bg-gradient-to-r from-cyan-600/20 via-indigo-600/20 to-purple-600/20 rounded-2xl border border-cyan-400/30 text-center">
-            <h3 className="text-2xl font-bold text-yellow-400 mb-3">Still Need Help?</h3>
+            <h3 className="text-2xl font-bold text-yellow-400 mb-3">
+              Still Need Help?
+            </h3>
             <p className="text-gray-300 mb-6">
-              Didn't find your answer? Contact our support team, and we'll be happy to help!
+              Didn't find your answer? Contact our support team, and we'll be
+              happy to help!
             </p>
+            {/* Link to contact page */}
             <a
               href="/contact-page"
               className="inline-block px-8 py-3 bg-cyan-500 text-white font-semibold rounded-lg hover:bg-cyan-600 transition"
@@ -199,6 +226,7 @@ const FAQAccordion = () => {
         </div>
       </div>
 
+      {/* CSS Animations - Fade in effect for accordions */}
       <style>{`
         @keyframes fadeIn {
           0% { opacity: 0; transform: translateY(20px); }
@@ -209,6 +237,7 @@ const FAQAccordion = () => {
   );
 };
 
+// Export main FAQ page component
 export const FAQPage = () => {
   return <FAQAccordion />;
 };

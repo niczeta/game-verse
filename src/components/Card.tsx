@@ -1,15 +1,19 @@
+// Game card component - displays individual game with image, video preview, price, and add to cart functionality
+// Syncs with global cart state and updates button appearance based on whether item is already in cart
+
 import { FaShoppingCart, FaPlay, FaCheck } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { isItemInCart, useAddToCart } from "./cardUtils";
 
+// Type definition for GameCard component props
 type GameCardProps = {
   id: number;
   title: string;
   description: string;
   imageUrl: string;
-  videoUrl?: string;
+  videoUrl?: string; // Optional video preview on hover
   price: number | string;
-  onDetailsClick?: () => void;
+  onDetailsClick?: () => void; // Callback when card is clicked
 };
 
 export const GameCard = ({
@@ -24,7 +28,8 @@ export const GameCard = ({
   const addToCart = useAddToCart();
   const [isAdded, setIsAdded] = useState(false);
 
-  // Controlla se l'item è nel carrello al mount e quando il carrello cambia
+  // Check if item is in cart on component mount and listen for cart updates from other components
+  // Syncs local button state with global cart state whenever cartUpdated event is triggered
   useEffect(() => {
     setIsAdded(isItemInCart(id));
 
@@ -36,9 +41,11 @@ export const GameCard = ({
     return () => window.removeEventListener("cartUpdated", handleCartUpdate);
   }, [id]);
 
+  // Handle add to cart button click
+  // Prevents event propagation (so card click doesn't fire) and updates state if item was successfully added
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
-    
+
     const wasAdded = addToCart({
       id,
       title,
@@ -65,7 +72,7 @@ export const GameCard = ({
       }}
       aria-label={`More details about ${title}`}
     >
-      {/* Image container */}
+      {/* Image container with hover effects - displays game thumbnail image */}
       <div className="relative h-56 sm:h-64 overflow-hidden bg-neutral-800">
         <img
           src={imageUrl}
@@ -74,6 +81,7 @@ export const GameCard = ({
           loading="lazy"
         />
 
+        {/* Video preview plays on hover if provided - fades in to replace image */}
         {videoUrl && (
           <video
             src={videoUrl}
@@ -85,6 +93,7 @@ export const GameCard = ({
           />
         )}
 
+        {/* Overlay with play icon appears on hover when video is available */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
           {videoUrl && (
             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-cyan-500/80 backdrop-blur">
@@ -93,22 +102,27 @@ export const GameCard = ({
           )}
         </div>
 
+        {/* Price badge - positioned at top-right, displays formatted price */}
         <div className="absolute top-3 right-3 bg-yellow-400/90 backdrop-blur px-3 py-1.5 rounded-full text-black font-bold text-sm shadow-lg">
           {typeof price === "number" ? `€${price.toFixed(2)}` : price}
         </div>
       </div>
 
-      {/* Content */}
+      {/* Content section with game title, description, and add to cart button */}
       <div className="p-4 flex-1 flex flex-col justify-between">
         <div>
+          {/* Game title - truncated to 2 lines */}
           <h3 className="text-cyan-400 text-base font-bold mb-2 line-clamp-2 group-hover:text-cyan-300 transition">
             {title}
           </h3>
+          {/* Game description - expands to 3 lines on hover */}
           <p className="text-gray-300 text-xs sm:text-sm line-clamp-2 group-hover:line-clamp-3 transition">
             {description}
           </p>
         </div>
 
+        {/* Add to cart button with state-based styling */}
+        {/* Changes appearance and functionality based on whether item is already in cart */}
         <div className="mt-4">
           <button
             onClick={handleAddToCart}
@@ -120,11 +134,13 @@ export const GameCard = ({
             }`}
           >
             {isAdded ? (
+              // Button state when item is already in cart
               <>
                 <FaCheck size={14} />
                 <span className="text-sm">In Cart</span>
               </>
             ) : (
+              // Button state when item can be added to cart
               <>
                 <FaShoppingCart size={14} />
                 <span className="text-sm">Add to Cart</span>

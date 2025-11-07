@@ -1,3 +1,6 @@
+// Shopping cart page - displays items in cart, pricing breakdown, and checkout functionality
+// Syncs cart state with localStorage and listens for updates from other components
+
 import { FaTrash, FaShoppingCart, FaArrowLeft, FaCheck } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -5,10 +8,14 @@ import type { CartItem } from "../components/cardUtils";
 
 export const Cart = () => {
   const navigate = useNavigate();
+
+  // State management for cart items and checkout process
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
+  // Load cart from localStorage on mount and listen for cart updates from other components
+  // Validates items to ensure price is a valid number
   useEffect(() => {
     const saved = localStorage.getItem("cart");
     if (saved) {
@@ -23,6 +30,7 @@ export const Cart = () => {
       }
     }
 
+    // Listen for cartUpdated event emitted when items are added/removed from other components
     const handleCartUpdate = () => {
       const saved = localStorage.getItem("cart");
       if (saved) {
@@ -42,6 +50,8 @@ export const Cart = () => {
     return () => window.removeEventListener("cartUpdated", handleCartUpdate);
   }, []);
 
+  // Remove individual item from cart and update localStorage
+  // Dispatches event to sync other components
   const removeFromCart = (id: number) => {
     const updated = cartItems.filter((item) => item.id !== id);
     setCartItems(updated);
@@ -49,12 +59,15 @@ export const Cart = () => {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
+  // Clear all items from cart and update localStorage
   const clearCart = () => {
     setCartItems([]);
     localStorage.setItem("cart", "[]");
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
+  // Calculate pricing totals using array reduce
+  // Subtotal is sum of all item prices, tax is 10% of subtotal
   const subtotal = cartItems.reduce((sum, item) => {
     const price = typeof item.price === "number" ? item.price : 0;
     return sum + price;
@@ -62,31 +75,35 @@ export const Cart = () => {
   const tax = subtotal * 0.1;
   const total = subtotal + tax;
 
+  // Handle checkout process - simulates payment processing with loading state
+  // Shows success message for 5 seconds then clears cart
   const handleCheckout = async () => {
     setIsLoading(true);
 
-    // Simulazione del processo di checkout (3 secondi)
+    // Simulate checkout API call (3 seconds)
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
     setIsLoading(false);
     setCheckoutSuccess(true);
     clearCart();
 
-    // Nascondi il messaggio di successo dopo 5 secondi
+    // Hide success message after 5 seconds
     setTimeout(() => {
       setCheckoutSuccess(false);
     }, 5000);
   };
 
+  // Navigate to home page and scroll to games section
+  // If already on home, scroll immediately; otherwise navigate first then scroll
   const handleContinueShopping = () => {
-    // Se siamo già sulla home, scrolla subito
+    // Check if currently on home page
     if (window.location.pathname === "/") {
       const element = document.getElementById("pc-games");
       if (element) {
         element.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     } else {
-      // Altrimenti naviga prima
+      // Navigate to home first, wait for transition, then scroll
       navigate("/");
       setTimeout(() => {
         const element = document.getElementById("pc-games");
@@ -99,13 +116,11 @@ export const Cart = () => {
 
   return (
     <section className="w-full bg-gray-950 text-white">
-      {/* Hero Section */}
-      <div className="relative h-96 overflow-hidden flex items-center justify-center bg-gradient-to-br from-cyan-600 via-indigo-700 to-purple-800">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute inset-0 bg-black/40"></div>
-        </div>
+      {/* Hero Section with gradient background and page title */}
+      <div className="relative h-80 overflow-hidden flex items-center justify-center bg-gradient-to-br from-cyan-600 via-indigo-700 to-purple-800">
+        <div className="absolute inset-0 bg-black/40"></div>
         <div className="relative z-10 text-center px-6">
-          <h1 className="text-5xl sm:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-yellow-300 to-purple-500">
+          <h1 className="text-5xl sm:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-yellow-300 to-purple-500 pb-2">
             Your Shopping Cart
           </h1>
           <p className="text-xl text-neutral-200 max-w-2xl mx-auto">
@@ -115,28 +130,32 @@ export const Cart = () => {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main Content Area */}
       <div className="px-6 sm:px-12 md:px-20 py-16">
         <div className="max-w-7xl mx-auto">
-          {/* Success Message */}
+          {/* Success Message - Displayed after successful checkout */}
           {checkoutSuccess && (
-            <div className="mb-8 p-6 bg-green-500/20 border-2 border-green-500 rounded-lg animate-pulse">
-              <div className="flex items-center justify-center gap-3">
-                <FaCheck className="text-green-400 text-2xl" />
+            <div className="mb-8 p-8 bg-gradient-to-r from-green-500/30 to-green-600/20 border-2 border-green-400 rounded-lg shadow-lg shadow-green-500/20">
+              <div className="flex flex-col items-center justify-center gap-4">
+                <div className="bg-green-500/30 p-4 rounded-full">
+                  <FaCheck className="text-green-300 text-4xl" />
+                </div>
                 <div className="text-center">
-                  <p className="text-green-400 font-semibold text-lg">
-                    ✓ Payment Successful!
+                  <p className="text-green-300 font-bold text-2xl mb-2">
+                    Payment Successful!
                   </p>
-                  <p className="text-green-300 text-sm mt-1">
-                    Your order has been placed. Check your email for
-                    confirmation.
+                  <p className="text-green-200 text-base">
+                    Your order has been placed successfully.
+                  </p>
+                  <p className="text-green-200/80 text-sm mt-1">
+                    Check your email for confirmation details.
                   </p>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Empty Cart */}
+          {/* Empty Cart State - Displayed when cart is empty */}
           {cartItems.length === 0 && !checkoutSuccess && (
             <div className="text-center py-16">
               <FaShoppingCart className="text-gray-500 text-6xl mx-auto mb-4" />
@@ -155,10 +174,10 @@ export const Cart = () => {
             </div>
           )}
 
-          {/* Cart Content */}
+          {/* Cart Content - Two column layout with items and order summary */}
           {cartItems.length > 0 && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Left Column - Cart Items */}
+              {/* Left Column - List of cart items with images, titles, prices, and remove buttons */}
               <div className="lg:col-span-2">
                 <h2 className="text-3xl font-bold text-yellow-400 mb-6">
                   Items ({cartItems.length})
@@ -172,6 +191,7 @@ export const Cart = () => {
                         key={item.id}
                         className="bg-gray-800 rounded-lg p-6 flex gap-6 hover:bg-gray-700 transition"
                       >
+                        {/* Product thumbnail image */}
                         <div className="flex-shrink-0">
                           <img
                             src={item.imageUrl}
@@ -180,6 +200,7 @@ export const Cart = () => {
                           />
                         </div>
 
+                        {/* Product title and price */}
                         <div className="flex-1 flex flex-col justify-between">
                           <div>
                             <h3 className="text-cyan-400 font-semibold text-lg mb-2">
@@ -191,6 +212,7 @@ export const Cart = () => {
                           </div>
                         </div>
 
+                        {/* Remove item button */}
                         <div className="flex items-center">
                           <button
                             onClick={() => removeFromCart(item.id)}
@@ -206,13 +228,14 @@ export const Cart = () => {
                 </div>
               </div>
 
-              {/* Right Column - Summary */}
+              {/* Right Column - Order summary with pricing breakdown and checkout buttons */}
               <div className="lg:col-span-1">
                 <div className="bg-gray-800 rounded-lg p-8 sticky top-24">
                   <h2 className="text-2xl font-bold text-yellow-400 mb-6">
                     Order Summary
                   </h2>
 
+                  {/* Pricing Breakdown - Subtotal and tax breakdown */}
                   <div className="space-y-4 mb-8 border-b border-gray-700 pb-6">
                     <div className="flex justify-between text-gray-300">
                       <span>Subtotal</span>
@@ -224,12 +247,13 @@ export const Cart = () => {
                     </div>
                   </div>
 
+                  {/* Total Price - Bold and prominent total amount */}
                   <div className="flex justify-between text-xl font-bold text-cyan-400 mb-8">
                     <span>Total</span>
                     <span>€{total.toFixed(2)}</span>
                   </div>
 
-                  {/* Loading Bar */}
+                  {/* Loading Progress Bar - Displayed during checkout process */}
                   {isLoading && (
                     <div className="mb-6">
                       <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
@@ -241,7 +265,9 @@ export const Cart = () => {
                     </div>
                   )}
 
+                  {/* Action Buttons - Checkout and Continue Shopping buttons */}
                   <div className="space-y-3">
+                    {/* Checkout Button with loading and disabled states */}
                     <button
                       onClick={handleCheckout}
                       disabled={isLoading}
@@ -265,6 +291,8 @@ export const Cart = () => {
                         </>
                       )}
                     </button>
+
+                    {/* Continue Shopping Button - Returns to home and scrolls to games section */}
                     <button
                       onClick={handleContinueShopping}
                       disabled={isLoading}
@@ -278,7 +306,7 @@ export const Cart = () => {
                     </button>
                   </div>
 
-                  {/* Info */}
+                  {/* Test Payment Info - Educational message about test payments */}
                   <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
                     <p className="text-blue-300 text-xs text-center">
                       💳 Test payment • Use any card number
