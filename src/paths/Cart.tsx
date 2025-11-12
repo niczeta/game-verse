@@ -5,6 +5,7 @@ import { FaTrash, FaShoppingCart, FaArrowLeft, FaCheck } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { CartItem } from "../components/cardUtils";
+import { Button } from "../form-components/Button";
 
 export const Cart = () => {
   const navigate = useNavigate();
@@ -165,12 +166,15 @@ export const Cart = () => {
               <p className="text-gray-300 mb-8">
                 Start adding games to your cart!
               </p>
-              <button
+              <Button
+                text="Continue Shopping"
+                icon={<FaArrowLeft />}
+                iconPosition="left"
                 onClick={handleContinueShopping}
-                className="inline-flex items-center gap-2 px-8 py-3 bg-cyan-500 text-white font-semibold rounded-lg hover:bg-cyan-600 transition"
-              >
-                <FaArrowLeft /> Continue Shopping
-              </button>
+                variant="outline"
+                color="yellow"
+                className="inline-flex"
+              />
             </div>
           )}
 
@@ -217,7 +221,7 @@ export const Cart = () => {
                           <button
                             onClick={() => removeFromCart(item.id)}
                             disabled={isLoading}
-                            className="p-3 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/40 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="p-3 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/40 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                           >
                             <FaTrash size={18} />
                           </button>
@@ -267,43 +271,33 @@ export const Cart = () => {
 
                   {/* Action Buttons - Checkout and Continue Shopping buttons */}
                   <div className="space-y-3">
-                    {/* Checkout Button with loading and disabled states */}
-                    <button
-                      onClick={handleCheckout}
-                      disabled={isLoading}
-                      className={`w-full py-3 px-4 font-semibold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 transform ${
-                        isLoading
-                          ? "bg-gray-600 text-gray-300 cursor-not-allowed"
-                          : "bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white hover:scale-105 active:scale-95"
-                      }`}
-                    >
-                      {isLoading ? (
-                        <>
+                    {/* Checkout Button using custom Button component - No hover scale */}
+                    <Button
+                      text={isLoading ? "Processing..." : "Proceed to Checkout"}
+                      icon={
+                        isLoading ? (
                           <div className="animate-spin">
                             <FaShoppingCart size={16} />
                           </div>
-                          <span>Processing...</span>
-                        </>
-                      ) : (
-                        <>
+                        ) : (
                           <FaShoppingCart size={16} />
-                          <span>Proceed to Checkout</span>
-                        </>
-                      )}
-                    </button>
+                        )
+                      }
+                      iconPosition="left"
+                      onClick={handleCheckout}
+                      disabled={isLoading}
+                      className="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white"
+                    />
 
-                    {/* Continue Shopping Button - Returns to home and scrolls to games section */}
-                    <button
+                    {/* Continue Shopping Button using custom Button component - Outline Yellow */}
+                    <Button
+                      text="Continue Shopping"
                       onClick={handleContinueShopping}
                       disabled={isLoading}
-                      className={`w-full py-3 px-4 border-2 border-yellow-400 text-yellow-400 font-semibold rounded-lg text-center transition ${
-                        isLoading
-                          ? "opacity-50 cursor-not-allowed"
-                          : "hover:bg-yellow-400/10"
-                      }`}
-                    >
-                      Continue Shopping
-                    </button>
+                      variant="outline"
+                      color="yellow"
+                      className="w-full"
+                    />
                   </div>
 
                   {/* Test Payment Info - Educational message about test payments */}

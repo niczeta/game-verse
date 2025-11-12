@@ -32,7 +32,11 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
           {/* Logo Section - Company branding with logo image and gradient text tagline */}
           <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-2 cursor-pointer hover:opacity-90 transition">
+            {/* Logo link that navigates to home page */}
+            <Link
+              to="/"
+              className="flex items-center gap-2 cursor-pointer hover:opacity-90 transition w-fit"
+            >
               <img
                 src="/logo.png"
                 alt="Logo"
@@ -42,7 +46,7 @@ export const Footer = () => {
               <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-yellow-400">
                 GameVerse
               </span>
-            </div>
+            </Link>
             {/* Brand tagline */}
             <p className="text-sm text-gray-500 leading-relaxed">
               Your ultimate destination for gaming excellence and unbeatable

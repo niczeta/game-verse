@@ -326,7 +326,7 @@ export const AuthPage = () => {
                 <div className="text-right">
                   <button
                     type="button"
-                    className="text-cyan-400 hover:text-cyan-300 text-sm font-medium transition"
+                    className="text-cyan-400 hover:text-cyan-300 text-sm font-medium transition cursor-pointer"
                   >
                     Forgot password?
                   </button>
@@ -395,11 +395,11 @@ export const AuthPage = () => {
 
             {/* Social login buttons - Google and Discord */}
             <div className="space-y-3">
-              <button className="w-full py-2.5 px-4 bg-white text-black font-semibold rounded-lg hover:bg-gray-100 transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+              <button className="w-full py-2.5 px-4 bg-white text-black font-semibold rounded-lg hover:bg-gray-100 transition-all transform hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
                 <FaGoogle size={18} />
                 Continue with Google
               </button>
-              <button className="w-full py-2.5 px-4 bg-[#5865F2] text-white font-semibold rounded-lg hover:bg-[#4752C4] transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+              <button className="w-full py-2.5 px-4 bg-[#5865F2] text-white font-semibold rounded-lg hover:bg-[#4752C4] transition-all transform hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
                 <FaDiscord size={18} />
                 Continue with Discord
               </button>
@@ -413,7 +413,7 @@ export const AuthPage = () => {
               <button
                 type="button"
                 onClick={toggleForm}
-                className="text-cyan-400 hover:text-cyan-300 font-semibold transition"
+                className="text-cyan-400 hover:text-cyan-300 font-semibold transition cursor-pointer"
               >
                 {isSignIn ? "Sign Up" : "Sign In"}
               </button>

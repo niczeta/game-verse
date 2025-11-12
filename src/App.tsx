@@ -17,6 +17,7 @@ import { AuthPage } from "./paths/AuthPage";
 import { FAQPage } from "./paths/FAQPage";
 import { Cart } from "./paths/Cart";
 import { HomePage } from "./paths/HomePage";
+import { GameDetailPage } from "./paths/GameDetailPage";
 
 // Type definition for PageWrapper component props
 type PageWrapperProps = {
@@ -24,17 +25,12 @@ type PageWrapperProps = {
 };
 
 // PageWrapper component - wraps each page with entrance/exit animations using Framer Motion
-// Provides consistent fade and slide animations for all page transitions
 const PageWrapper = ({ children }: PageWrapperProps) => {
   return (
     <motion.div
-      // Initial state when page first mounts - invisible and slightly below
       initial={{ opacity: 0, y: 20 }}
-      // Animate to state when page is active - fully visible and in final position
       animate={{ opacity: 1, y: 0 }}
-      // Exit state when page is leaving - fades out and moves up
       exit={{ opacity: 0, y: -20 }}
-      // Transition configuration - smooth fade and slide effect
       transition={{ duration: 0.4, ease: "easeInOut" }}
     >
       {children}
@@ -43,19 +39,15 @@ const PageWrapper = ({ children }: PageWrapperProps) => {
 };
 
 // AnimatedRoutes component - manages all application routes with page transition animations
-// Uses AnimatePresence to handle enter/exit animations during route changes
 const AnimatedRoutes = () => {
-  // Get current location to trigger re-renders on route changes
   const location = useLocation();
 
   return (
-    // AnimatePresence enables exit animations when routes change
     <AnimatePresence mode="wait">
-      {/* Routes component with location key to detect navigation changes */}
       <Routes location={location} key={location.pathname}>
         {/* Layout wrapper - Navbar and Footer persist across all routes */}
         <Route element={<Layout />}>
-          {/* Home page - main landing page with hero and featured games */}
+          {/* Home page */}
           <Route
             path="/"
             element={
@@ -65,7 +57,17 @@ const AnimatedRoutes = () => {
             }
           />
 
-          {/* Authentication page - sign in and sign up forms */}
+          {/* Game detail page (dettaglio dinamico) */}
+          <Route
+            path="/game/:id"
+            element={
+              <PageWrapper>
+                <GameDetailPage />
+              </PageWrapper>
+            }
+          />
+
+          {/* Authentication page */}
           <Route
             path="/auth-page"
             element={
@@ -75,7 +77,7 @@ const AnimatedRoutes = () => {
             }
           />
 
-          {/* Contact page - contact form and business information */}
+          {/* Contact page */}
           <Route
             path="/contact-page"
             element={
@@ -85,7 +87,7 @@ const AnimatedRoutes = () => {
             }
           />
 
-          {/* About page - company information and features */}
+          {/* About page */}
           <Route
             path="/about-page"
             element={
@@ -95,7 +97,7 @@ const AnimatedRoutes = () => {
             }
           />
 
-          {/* FAQ page - frequently asked questions organized by category */}
+          {/* FAQ page */}
           <Route
             path="/faq-page"
             element={
@@ -105,7 +107,7 @@ const AnimatedRoutes = () => {
             }
           />
 
-          {/* Cart page - shopping cart and checkout */}
+          {/* Cart page */}
           <Route
             path="/cart-page"
             element={
@@ -124,14 +126,10 @@ const AnimatedRoutes = () => {
 const App = () => {
   return (
     <Router>
-      {/* ScrollToTop component - automatically scrolls page to top on route changes */}
       <ScrollToTop />
-
-      {/* AnimatedRoutes component - renders all routes with page transition animations */}
       <AnimatedRoutes />
     </Router>
   );
 };
 
-// Export App as default - entry point for the React application
 export default App;

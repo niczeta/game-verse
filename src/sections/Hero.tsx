@@ -68,24 +68,25 @@ export const HeroSection = () => {
 
         {/* CTA Buttons Container - two call-to-action buttons for user engagement */}
         <div className="flex flex-col sm:flex-row gap-3 animate-fade-in3">
-          {/* Shop Now button - primary CTA using gradient variant */}
+          {/* Shop Now button - outline variant with cyan color */}
           {/* Calls handleScrollToFeatured on click */}
           <Button
             text="Shop Now"
-            variant="gradient"
+            variant="outline"
+            color="cyan"
             size="large"
             onClick={handleScrollToFeatured}
-            className="max-w-[180px]"
           />
 
-          {/* Explore Games button - secondary CTA with outline style */}
+          {/* Explore Games button - outline variant with yellow color */}
           {/* Alternative option for users preferring secondary action */}
-          <button
+          <Button
+            text="Explore Games"
+            variant="outline"
+            color="yellow"
+            size="large"
             onClick={handleScrollToFeatured}
-            className="px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold rounded-md border-2 border-cyan-400 text-cyan-300 hover:bg-cyan-400/20 hover:scale-105 transition-all duration-300"
-          >
-            Explore Games
-          </button>
+          />
         </div>
       </div>
 
@@ -133,14 +134,14 @@ export const HeroSection = () => {
           /* Title pop animation - expands letter spacing and fades in from top */
           @keyframes titlepop {
             0% { 
-              letter-spacing: 10px; // Wide initial spacing
+              letter-spacing: 10px;
               opacity: 0;
-              transform: translateY(-20px); // Start higher
+              transform: translateY(-20px);
             }
             100% { 
-              letter-spacing: 2px; // Normal spacing
+              letter-spacing: 2px;
               opacity: 1;
-              transform: translateY(0); // Move to final position
+              transform: translateY(0);
             }
           }
 
