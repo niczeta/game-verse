@@ -1,6 +1,3 @@
-// Shopping cart page - displays items in cart, pricing breakdown, and checkout functionality
-// Syncs cart state with localStorage and listens for updates from other components
-
 import { FaTrash, FaShoppingCart, FaArrowLeft, FaCheck } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,13 +7,10 @@ import { Button } from "../form-components/Button";
 export const Cart = () => {
   const navigate = useNavigate();
 
-  // State management for cart items and checkout process
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
-  // Load cart from localStorage on mount and listen for cart updates from other components
-  // Validates items to ensure price is a valid number
   useEffect(() => {
     const saved = localStorage.getItem("cart");
     if (saved) {
@@ -30,8 +24,6 @@ export const Cart = () => {
         setCartItems([]);
       }
     }
-
-    // Listen for cartUpdated event emitted when items are added/removed from other components
     const handleCartUpdate = () => {
       const saved = localStorage.getItem("cart");
       if (saved) {
@@ -46,13 +38,10 @@ export const Cart = () => {
         }
       }
     };
-
     window.addEventListener("cartUpdated", handleCartUpdate);
     return () => window.removeEventListener("cartUpdated", handleCartUpdate);
   }, []);
 
-  // Remove individual item from cart and update localStorage
-  // Dispatches event to sync other components
   const removeFromCart = (id: number) => {
     const updated = cartItems.filter((item) => item.id !== id);
     setCartItems(updated);
@@ -60,64 +49,39 @@ export const Cart = () => {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  // Clear all items from cart and update localStorage
   const clearCart = () => {
     setCartItems([]);
     localStorage.setItem("cart", "[]");
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  // Calculate pricing totals using array reduce
-  // Subtotal is sum of all item prices, tax is 10% of subtotal
-  const subtotal = cartItems.reduce((sum, item) => {
-    const price = typeof item.price === "number" ? item.price : 0;
-    return sum + price;
-  }, 0);
+  const subtotal = cartItems.reduce(
+    (sum, item) => (typeof item.price === "number" ? sum + item.price : sum),
+    0
+  );
   const tax = subtotal * 0.1;
   const total = subtotal + tax;
 
-  // Handle checkout process - simulates payment processing with loading state
-  // Shows success message for 5 seconds then clears cart
   const handleCheckout = async () => {
     setIsLoading(true);
-
-    // Simulate checkout API call (3 seconds)
     await new Promise((resolve) => setTimeout(resolve, 3000));
-
     setIsLoading(false);
     setCheckoutSuccess(true);
     clearCart();
-
-    // Hide success message after 5 seconds
     setTimeout(() => {
       setCheckoutSuccess(false);
     }, 5000);
   };
 
-  // Navigate to home page and scroll to games section
-  // If already on home, scroll immediately; otherwise navigate first then scroll
+  // Correct version: only set flag and navigate
   const handleContinueShopping = () => {
-    // Check if currently on home page
-    if (window.location.pathname === "/") {
-      const element = document.getElementById("pc-games");
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    } else {
-      // Navigate to home first, wait for transition, then scroll
-      navigate("/");
-      setTimeout(() => {
-        const element = document.getElementById("pc-games");
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 800);
-    }
+    localStorage.setItem("scrollToSection", "pc-games");
+    navigate("/");
   };
 
   return (
     <section className="w-full bg-gray-950 text-white">
-      {/* Hero Section with gradient background and page title */}
+      {/* Hero Section */}
       <div className="relative h-80 overflow-hidden flex items-center justify-center bg-gradient-to-br from-cyan-600 via-indigo-700 to-purple-800">
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="relative z-10 text-center px-6">
@@ -125,16 +89,12 @@ export const Cart = () => {
             Your Shopping Cart
           </h1>
           <p className="text-xl text-neutral-200 max-w-2xl mx-auto">
-            {cartItems.length} item{cartItems.length !== 1 ? "s" : ""} in your
-            cart
+            {cartItems.length} item{cartItems.length !== 1 ? "s" : ""} in your cart
           </p>
         </div>
       </div>
-
-      {/* Main Content Area */}
       <div className="px-6 sm:px-12 md:px-20 py-16">
         <div className="max-w-7xl mx-auto">
-          {/* Success Message - Displayed after successful checkout */}
           {checkoutSuccess && (
             <div className="mb-8 p-8 bg-gradient-to-r from-green-500/30 to-green-600/20 border-2 border-green-400 rounded-lg shadow-lg shadow-green-500/20">
               <div className="flex flex-col items-center justify-center gap-4">
@@ -156,7 +116,6 @@ export const Cart = () => {
             </div>
           )}
 
-          {/* Empty Cart State - Displayed when cart is empty */}
           {cartItems.length === 0 && !checkoutSuccess && (
             <div className="text-center py-16">
               <FaShoppingCart className="text-gray-500 text-6xl mx-auto mb-4" />
@@ -178,68 +137,53 @@ export const Cart = () => {
             </div>
           )}
 
-          {/* Cart Content - Two column layout with items and order summary */}
           {cartItems.length > 0 && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Left Column - List of cart items with images, titles, prices, and remove buttons */}
               <div className="lg:col-span-2">
                 <h2 className="text-3xl font-bold text-yellow-400 mb-6">
                   Items ({cartItems.length})
                 </h2>
                 <div className="space-y-4">
-                  {cartItems.map((item) => {
-                    const price =
-                      typeof item.price === "number" ? item.price : 0;
-                    return (
-                      <div
-                        key={item.id}
-                        className="bg-gray-800 rounded-lg p-6 flex gap-6 hover:bg-gray-700 transition"
-                      >
-                        {/* Product thumbnail image */}
-                        <div className="flex-shrink-0">
-                          <img
-                            src={item.imageUrl}
-                            alt={item.title}
-                            className="w-24 h-24 rounded-lg object-cover"
-                          />
-                        </div>
-
-                        {/* Product title and price */}
-                        <div className="flex-1 flex flex-col justify-between">
-                          <div>
-                            <h3 className="text-cyan-400 font-semibold text-lg mb-2">
-                              {item.title}
-                            </h3>
-                            <p className="text-2xl font-bold text-yellow-400">
-                              €{price.toFixed(2)}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Remove item button */}
-                        <div className="flex items-center">
-                          <button
-                            onClick={() => removeFromCart(item.id)}
-                            disabled={isLoading}
-                            className="p-3 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/40 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-                          >
-                            <FaTrash size={18} />
-                          </button>
+                  {cartItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className="bg-gray-800 rounded-lg p-6 flex gap-6 hover:bg-gray-700 transition"
+                    >
+                      <div className="flex-shrink-0">
+                        <img
+                          src={item.imageUrl}
+                          alt={item.title}
+                          className="w-24 h-24 rounded-lg object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 flex flex-col justify-between">
+                        <div>
+                          <h3 className="text-cyan-400 font-semibold text-lg mb-2">
+                            {item.title}
+                          </h3>
+                          <p className="text-2xl font-bold text-yellow-400">
+                            €{typeof item.price === "number" ? item.price.toFixed(2) : "0.00"}
+                          </p>
                         </div>
                       </div>
-                    );
-                  })}
+                      <div className="flex items-center">
+                        <button
+                          onClick={() => removeFromCart(item.id)}
+                          disabled={isLoading}
+                          className="p-3 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/40 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                        >
+                          <FaTrash size={18} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-
-              {/* Right Column - Order summary with pricing breakdown and checkout buttons */}
               <div className="lg:col-span-1">
                 <div className="bg-gray-800 rounded-lg p-8 sticky top-24">
                   <h2 className="text-2xl font-bold text-yellow-400 mb-6">
                     Order Summary
                   </h2>
-
-                  {/* Pricing Breakdown - Subtotal and tax breakdown */}
                   <div className="space-y-4 mb-8 border-b border-gray-700 pb-6">
                     <div className="flex justify-between text-gray-300">
                       <span>Subtotal</span>
@@ -250,14 +194,10 @@ export const Cart = () => {
                       <span>€{tax.toFixed(2)}</span>
                     </div>
                   </div>
-
-                  {/* Total Price - Bold and prominent total amount */}
                   <div className="flex justify-between text-xl font-bold text-cyan-400 mb-8">
                     <span>Total</span>
                     <span>€{total.toFixed(2)}</span>
                   </div>
-
-                  {/* Loading Progress Bar - Displayed during checkout process */}
                   {isLoading && (
                     <div className="mb-6">
                       <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
@@ -268,10 +208,7 @@ export const Cart = () => {
                       </p>
                     </div>
                   )}
-
-                  {/* Action Buttons - Checkout and Continue Shopping buttons */}
                   <div className="space-y-3">
-                    {/* Checkout Button using custom Button component - No hover scale */}
                     <Button
                       text={isLoading ? "Processing..." : "Proceed to Checkout"}
                       icon={
@@ -288,8 +225,6 @@ export const Cart = () => {
                       disabled={isLoading}
                       className="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white"
                     />
-
-                    {/* Continue Shopping Button using custom Button component - Outline Yellow */}
                     <Button
                       text="Continue Shopping"
                       onClick={handleContinueShopping}
@@ -299,8 +234,6 @@ export const Cart = () => {
                       className="w-full"
                     />
                   </div>
-
-                  {/* Test Payment Info - Educational message about test payments */}
                   <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
                     <p className="text-blue-300 text-xs text-center">
                       💳 Test payment • Use any card number

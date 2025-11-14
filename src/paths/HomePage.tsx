@@ -1,18 +1,30 @@
-// Home page - main landing page that displays hero section, featured games, and games gallery
-// Composed of reusable section components for a modular and maintainable structure
-
+import { useEffect } from "react";
 import { GamesGallery } from "../sections/Gallery";
 import { HeroSection } from "../sections/Hero";
 
-// HomePage component - renders the main landing page with three key sections
 export const HomePage = () => {
+  useEffect(() => {
+    const scrollToSection = localStorage.getItem("scrollToSection");
+    if (scrollToSection === "pc-games") {
+      const element = document.getElementById("pc-games");
+      if (element) {
+        const yOffset = -80; // Offset: adjust for sticky navbar if needed
+        const y =
+          element.getBoundingClientRect().top +
+          window.pageYOffset +
+          yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+      localStorage.removeItem("scrollToSection");
+    }
+  }, []);
+
   return (
     <div className="w-full min-h-screen bg-neutral-50">
-      {/* Hero Section - Main banner with call-to-action and marketing message */}
       <HeroSection />
-
-      {/* Games Gallery Section - Displays full catalog of games available for purchase */}
-      <GamesGallery />
+      <section id="pc-games">
+        <GamesGallery />
+      </section>
     </div>
   );
 };

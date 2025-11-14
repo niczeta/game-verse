@@ -1,21 +1,22 @@
-// Custom hook component that automatically scrolls to top of page when route changes
-// Prevents users from landing mid-page when navigating to a new route
-
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-// ScrollToTop component - automatically scrolls viewport to top whenever the current route changes
-// useLocation hook detects pathname changes and triggers scroll on each page navigation
+// ScrollToTop component - scrolls to the top of the page on every route change
 export const ScrollToTop = () => {
-  // Get current pathname from URL
   const { pathname } = useLocation();
 
-  // Scroll to top whenever pathname changes (i.e., when user navigates to a different page)
-  // behavior "auto" scrolls instantly; use "smooth" for animated scroll effect
   useEffect(() => {
+    // Skip scrollToTop when navigating to "/" (home) and a section scroll is requested.
+    // This prevents interfering with smooth section scrolls after actions like "Continue Shopping".
+    const scrollToSection = localStorage.getItem("scrollToSection");
+    if (pathname === "/" && scrollToSection === "pc-games") {
+      // Let the HomePage handle the custom scroll instead.
+      return;
+    }
+    // By default: scroll to top whenever the route changes.
     window.scrollTo({ top: 0, behavior: "auto" });
   }, [pathname]);
 
-  // Component returns null as it only handles side effects, doesn't render any UI
+  // This component is for side effects only and does not render anything.
   return null;
 };

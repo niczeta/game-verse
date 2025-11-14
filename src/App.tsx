@@ -1,6 +1,3 @@
-// Main App component - sets up routing, page transitions, and layout structure for the entire application
-// Uses Framer Motion for smooth page entrance/exit animations and React Router for navigation
-
 import {
   BrowserRouter as Router,
   Routes,
@@ -24,7 +21,7 @@ type PageWrapperProps = {
   children: React.ReactNode; // Page content to be animated
 };
 
-// PageWrapper component - wraps each page with entrance/exit animations using Framer Motion
+// PageWrapper con ScrollToTop DENTRO (solo per la nuova pagina)
 const PageWrapper = ({ children }: PageWrapperProps) => {
   return (
     <motion.div
@@ -33,6 +30,7 @@ const PageWrapper = ({ children }: PageWrapperProps) => {
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
     >
+      <ScrollToTop />
       {children}
     </motion.div>
   );
@@ -56,8 +54,7 @@ const AnimatedRoutes = () => {
               </PageWrapper>
             }
           />
-
-          {/* Game detail page (dettaglio dinamico) */}
+          {/* Game detail page */}
           <Route
             path="/game/:id"
             element={
@@ -66,7 +63,6 @@ const AnimatedRoutes = () => {
               </PageWrapper>
             }
           />
-
           {/* Authentication page */}
           <Route
             path="/auth-page"
@@ -76,7 +72,6 @@ const AnimatedRoutes = () => {
               </PageWrapper>
             }
           />
-
           {/* Contact page */}
           <Route
             path="/contact-page"
@@ -86,7 +81,6 @@ const AnimatedRoutes = () => {
               </PageWrapper>
             }
           />
-
           {/* About page */}
           <Route
             path="/about-page"
@@ -96,7 +90,6 @@ const AnimatedRoutes = () => {
               </PageWrapper>
             }
           />
-
           {/* FAQ page */}
           <Route
             path="/faq-page"
@@ -106,7 +99,6 @@ const AnimatedRoutes = () => {
               </PageWrapper>
             }
           />
-
           {/* Cart page */}
           <Route
             path="/cart-page"
@@ -126,7 +118,6 @@ const AnimatedRoutes = () => {
 const App = () => {
   return (
     <Router>
-      <ScrollToTop />
       <AnimatedRoutes />
     </Router>
   );
