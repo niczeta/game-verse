@@ -1,11 +1,11 @@
-import { FaGamepad, FaStar, FaUsers, FaShieldAlt } from "react-icons/fa";
+import { Gamepad2, Star, Users, ShieldCheck } from "lucide-react";
 import { Button } from "../form-components/Button";
 
 export const About = () => {
   return (
     <>
       <section className="w-full bg-gray-950 text-white">
-        {/* Hero Section - Same size as FAQPage and Cart */}
+        {/* Hero Section */}
         <div className="relative h-80 overflow-hidden flex items-center justify-center bg-gradient-to-br from-cyan-600 via-indigo-700 to-purple-800">
           <div className="absolute inset-0 bg-black/40"></div>
           <div className="relative z-10 text-center px-6">
@@ -18,7 +18,7 @@ export const About = () => {
           </div>
         </div>
 
-        {/* Mission Section - Core values and company purpose statement */}
+        {/* Mission Section */}
         <div className="px-6 sm:px-12 md:px-20 py-16 md:py-24">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl font-bold mb-8 text-center text-yellow-400">
@@ -34,15 +34,14 @@ export const About = () => {
           </div>
         </div>
 
-        {/* Features Grid - Four key features with icons highlighting company strengths */}
+        {/* Features Grid */}
         <div className="px-6 sm:px-12 md:px-20 py-16 bg-gray-900">
           <h2 className="text-4xl font-bold mb-12 text-center text-yellow-400">
             Why Choose GameVerse?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-            {/* Feature 1 - Game selection variety across multiple platforms */}
             <div className="bg-gray-800 rounded-lg p-6 text-center hover:bg-gray-700 transition">
-              <FaGamepad className="text-cyan-400 text-4xl mx-auto mb-4" />
+              <Gamepad2 className="text-cyan-400 w-12 h-12 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-3 text-cyan-400">
                 Huge Selection
               </h3>
@@ -51,10 +50,8 @@ export const About = () => {
                 Switch platforms.
               </p>
             </div>
-
-            {/* Feature 2 - Competitive pricing and exclusive discounts */}
             <div className="bg-gray-800 rounded-lg p-6 text-center hover:bg-gray-700 transition">
-              <FaStar className="text-yellow-400 text-4xl mx-auto mb-4" />
+              <Star className="text-yellow-400 w-12 h-12 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-3 text-yellow-400">
                 Best Prices
               </h3>
@@ -63,10 +60,8 @@ export const About = () => {
                 titles.
               </p>
             </div>
-
-            {/* Feature 3 - Active gaming community and social engagement */}
             <div className="bg-gray-800 rounded-lg p-6 text-center hover:bg-gray-700 transition">
-              <FaUsers className="text-indigo-400 text-4xl mx-auto mb-4" />
+              <Users className="text-indigo-400 w-12 h-12 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-3 text-indigo-400">
                 Community
               </h3>
@@ -75,10 +70,8 @@ export const About = () => {
                 community.
               </p>
             </div>
-
-            {/* Feature 4 - Security, authenticity, and customer support guarantee */}
             <div className="bg-gray-800 rounded-lg p-6 text-center hover:bg-gray-700 transition">
-              <FaShieldAlt className="text-green-400 text-4xl mx-auto mb-4" />
+              <ShieldCheck className="text-green-400 w-12 h-12 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-3 text-green-400">
                 Secure & Trusted
               </h3>
@@ -90,7 +83,7 @@ export const About = () => {
           </div>
         </div>
 
-        {/* Story Section - Company background and company growth journey */}
+        {/* Story Section */}
         <div className="px-6 sm:px-12 md:px-20 py-16 md:py-24">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl font-bold mb-8 text-center text-yellow-400">
@@ -119,24 +112,19 @@ export const About = () => {
           </div>
         </div>
 
-        {/* Stats Section - Key metrics showcasing company scale and reputation */}
+        {/* Stats Section */}
         <div className="px-6 sm:px-12 md:px-20 py-16 bg-gradient-to-r from-cyan-600/20 via-indigo-600/20 to-purple-600/20">
           <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            {/* Active users metric */}
             <div>
               <div className="text-5xl font-bold text-yellow-400 mb-2">
                 500K+
               </div>
               <p className="text-gray-300 text-lg">Active Gamers</p>
             </div>
-
-            {/* Games library metric */}
             <div>
               <div className="text-5xl font-bold text-cyan-400 mb-2">10K+</div>
               <p className="text-gray-300 text-lg">Games Available</p>
             </div>
-
-            {/* Customer satisfaction rating metric */}
             <div>
               <div className="text-5xl font-bold text-purple-400 mb-2">
                 4.9/5
@@ -146,7 +134,7 @@ export const About = () => {
           </div>
         </div>
 
-        {/* Contact CTA Section - Call-to-action with email and contact form links */}
+        {/* Contact CTA Section */}
         <div className="px-6 sm:px-12 md:px-20 py-16 md:py-24 text-center">
           <h2 className="text-4xl font-bold mb-6 text-yellow-400">
             Get in Touch
@@ -156,7 +144,6 @@ export const About = () => {
             our team anytime.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            {/* Email direct link button - Outline variant with cyan color */}
             <Button
               text="Email Us"
               onClick={() =>
@@ -166,8 +153,6 @@ export const About = () => {
               size="medium"
               variant="outline"
             />
-
-            {/* Contact form page navigation button - Outline variant with yellow color */}
             <Button
               text="Contact Form"
               onClick={() => (window.location.href = "/contact-page")}

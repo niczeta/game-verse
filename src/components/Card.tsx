@@ -1,4 +1,4 @@
-import { FaShoppingCart, FaPlay, FaCheck } from "react-icons/fa";
+import { ShoppingCart, Play, Check } from "lucide-react";
 import { useState, useEffect } from "react";
 import { isItemInCart, useAddToCart } from "./cardUtils";
 import { Button } from "../form-components/Button";
@@ -10,35 +10,31 @@ type GameCardProps = {
   description: string;
   imageUrl: string;
   youtubeUrl?: string;
-  youtubePreviewStart?: number;      // Preview start (seconds)
-  youtubePreviewDuration?: number;   // Preview duration (seconds)
+  youtubePreviewStart?: number;
+  youtubePreviewDuration?: number;
   price: number | string;
-  onDetailsClick?: () => void;       // Card click handler
+  onDetailsClick?: () => void;
 };
 
-// Helper: produces auto-playing, muted YouTube embed preview (custom time window)
 function getYoutubeEmbedUrl(
   url?: string,
   opts?: { start?: number; duration?: number }
 ) {
   if (!url) return null;
-  // Extract video ID from various YouTube URL formats
   const match = url.match(/(?:watch\?v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
   if (!match) return null;
   const videoId = match[1];
-  // Calculate start/end for preview segment
   const start = opts?.start ?? 10;
   const end = opts?.duration ? start + opts.duration : undefined;
-  // Build embed params
   const params = [
-    "autoplay=1",                // auto-play on show
-    "mute=1",                    // mute required for autoplay
-    "controls=0",                // no play controls
-    "rel=0",                     // don't show related videos
-    "loop=1",                    // loop preview segment
-    `playlist=${videoId}`,       // required for loop to work on segment
-    ...(start ? [`start=${start}`] : []),   // where preview starts
-    ...(end ? [`end=${end}`] : []),         // where preview ends
+    "autoplay=1",
+    "mute=1",
+    "controls=0",
+    "rel=0",
+    "loop=1",
+    `playlist=${videoId}`,
+    ...(start ? [`start=${start}`] : []),
+    ...(end ? [`end=${end}`] : []),
   ].join("&");
   return `https://www.youtube.com/embed/${videoId}?${params}`;
 }
@@ -54,20 +50,17 @@ export const GameCard = ({
   price,
   onDetailsClick,
 }: GameCardProps) => {
-  // Cart logic: sync local state with global cart, listen to updates
   const addToCart = useAddToCart();
   const [isAdded, setIsAdded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     setIsAdded(isItemInCart(id));
-    // Listen for cart changes (keep in sync with outside button clicks)
     const handleCartUpdate = () => setIsAdded(isItemInCart(id));
     window.addEventListener("cartUpdated", handleCartUpdate);
     return () => window.removeEventListener("cartUpdated", handleCartUpdate);
   }, [id]);
 
-  // Handler: add to cart, prevent event bubbling
   const handleAddToCart = (e?: React.MouseEvent<HTMLButtonElement>) => {
     e?.stopPropagation();
     const wasAdded = addToCart({
@@ -79,11 +72,10 @@ export const GameCard = ({
     if (wasAdded) setIsAdded(true);
   };
 
-  // YouTube embed URL for hover preview, only when hovered
   const ytEmbedUrl =
     youtubeUrl && isHovered
       ? getYoutubeEmbedUrl(youtubeUrl, {
-          start: youtubePreviewStart ?? 10,      // defaults
+          start: youtubePreviewStart ?? 10,
           duration: youtubePreviewDuration ?? 10
         })
       : null;
@@ -130,11 +122,11 @@ export const GameCard = ({
             tabIndex={-1}
           />
         )}
-        {/* Overlay play icon: shows if video */}
+        {/* Overlay play icon */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
           {youtubeUrl && (
             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-cyan-500/80 backdrop-blur">
-              <FaPlay className="text-white text-sm ml-1" />
+              <Play className="text-white w-5 h-5 ml-1" />
             </div>
           )}
         </div>
@@ -144,24 +136,20 @@ export const GameCard = ({
         </div>
       </div>
 
-      {/* Card content: title, description, and button */}
       <div className="p-4 flex-1 flex flex-col justify-between">
         <div>
-          {/* Game title - truncated if too long */}
           <h3 className="text-cyan-400 text-base font-bold mb-2 line-clamp-2 group-hover:text-cyan-300 transition">
             {title}
           </h3>
-          {/* Short game description - expands on hover */}
           <p className="text-gray-300 text-xs sm:text-sm line-clamp-2 group-hover:line-clamp-3 transition">
             {description}
           </p>
         </div>
-        {/* Cart button: shows "In Cart" or "Add to Cart" with correct state */}
         <div className="mt-4">
           {isAdded ? (
             <Button
               text="In Cart"
-              icon={<FaCheck size={14} />}
+              icon={<Check size={16} />}
               iconPosition="left"
               disabled={true}
               className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white cursor-not-allowed"
@@ -169,7 +157,7 @@ export const GameCard = ({
           ) : (
             <Button
               text="Add to Cart"
-              icon={<FaShoppingCart size={14} />}
+              icon={<ShoppingCart size={16} />}
               iconPosition="left"
               onClick={handleAddToCart}
               className="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white"

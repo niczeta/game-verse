@@ -1,7 +1,7 @@
-// GamesGallery component - Displays all games by platform in responsive grids
 import { SiNintendo } from "react-icons/si";
 import { GameCard } from "../components/Card";
 import { FaWindows, FaPlaystation, FaXbox } from "react-icons/fa";
+import { Flame } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { featuredGames, PCGames, PlayGames, SwitchGames, XBoxGames } from "./gamesData";
 
@@ -14,12 +14,13 @@ export const GamesGallery = () => {
       {/* Featured Games */}
       <div id="featured-games" style={{ scrollMarginTop: "100px" }}>
         <h2 className="flex items-center text-white text-3xl font-bold mb-6 text-center md:text-left gap-3">
-          🔥 Featured Games 🔥
+          <Flame className="text-yellow-400 w-8 h-8" />
+          Featured Games
+          <Flame className="text-yellow-400 w-8 h-8" />
         </h2>
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           {featuredGames.map((game) => (
             <div key={game.id} className="group">
-              {/* Passes all necessary props for card, including YouTube preview info */}
               <GameCard
                 id={game.id}
                 title={game.title}

@@ -1,4 +1,4 @@
-import { FaTrash, FaShoppingCart, FaArrowLeft, FaCheck } from "react-icons/fa";
+import { Trash2, ShoppingCart, ArrowLeft, Check, CreditCard } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { CartItem } from "../components/cardUtils";
@@ -73,7 +73,6 @@ export const Cart = () => {
     }, 5000);
   };
 
-  // Correct version: only set flag and navigate
   const handleContinueShopping = () => {
     localStorage.setItem("scrollToSection", "pc-games");
     navigate("/");
@@ -99,7 +98,7 @@ export const Cart = () => {
             <div className="mb-8 p-8 bg-gradient-to-r from-green-500/30 to-green-600/20 border-2 border-green-400 rounded-lg shadow-lg shadow-green-500/20">
               <div className="flex flex-col items-center justify-center gap-4">
                 <div className="bg-green-500/30 p-4 rounded-full">
-                  <FaCheck className="text-green-300 text-4xl" />
+                  <Check className="text-green-300 w-10 h-10" />
                 </div>
                 <div className="text-center">
                   <p className="text-green-300 font-bold text-2xl mb-2">
@@ -118,7 +117,7 @@ export const Cart = () => {
 
           {cartItems.length === 0 && !checkoutSuccess && (
             <div className="text-center py-16">
-              <FaShoppingCart className="text-gray-500 text-6xl mx-auto mb-4" />
+              <ShoppingCart className="text-gray-500 w-16 h-16 mx-auto mb-4" />
               <h2 className="text-3xl font-bold text-yellow-400 mb-4">
                 Your cart is empty
               </h2>
@@ -127,7 +126,7 @@ export const Cart = () => {
               </p>
               <Button
                 text="Continue Shopping"
-                icon={<FaArrowLeft />}
+                icon={<ArrowLeft />}
                 iconPosition="left"
                 onClick={handleContinueShopping}
                 variant="outline"
@@ -172,7 +171,7 @@ export const Cart = () => {
                           disabled={isLoading}
                           className="p-3 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/40 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                         >
-                          <FaTrash size={18} />
+                          <Trash2 size={18} />
                         </button>
                       </div>
                     </div>
@@ -214,10 +213,10 @@ export const Cart = () => {
                       icon={
                         isLoading ? (
                           <div className="animate-spin">
-                            <FaShoppingCart size={16} />
+                            <ShoppingCart size={16} />
                           </div>
                         ) : (
-                          <FaShoppingCart size={16} />
+                          <ShoppingCart size={16} />
                         )
                       }
                       iconPosition="left"
@@ -235,8 +234,9 @@ export const Cart = () => {
                     />
                   </div>
                   <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-                    <p className="text-blue-300 text-xs text-center">
-                      💳 Test payment • Use any card number
+                    <p className="text-blue-300 text-xs text-center flex items-center justify-center gap-1">
+                      <CreditCard className="inline-block w-4 h-4 text-blue-400" />
+                      Test payment • Use any card number
                     </p>
                   </div>
                 </div>

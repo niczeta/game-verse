@@ -1,6 +1,3 @@
-// Footer component - displays site navigation, support links, social media, and copyright information
-// Responsive layout with four-column grid that adapts to mobile screens
-
 import { Link, useLocation } from "react-router-dom";
 import {
   FaFacebookF,
@@ -10,8 +7,9 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { Heart } from "lucide-react";
 
-// Quick Links navigation items - provides shortcuts to main pages (excludes FAQ, includes Cart)
+// Quick Links navigation items
 const navLinks = [
   { name: "Home", to: "/" },
   { name: "About", to: "/about-page" },
@@ -19,20 +17,16 @@ const navLinks = [
   { name: "Contact Us", to: "/contact-page" },
 ];
 
-// Footer component - renders footer section with branding, navigation, support, and social links
 export const Footer = () => {
-  // Get current page location to highlight active nav link
   const location = useLocation();
 
   return (
     <footer className="bg-gradient-to-b from-gray-900 to-gray-950 text-gray-400 border-t border-gray-800 py-12 px-6 select-none">
       <div className="max-w-7xl mx-auto">
         {/* Main Grid - Four column responsive layout for different footer sections */}
-        {/* 1 column on mobile, 4 columns on medium+ screens */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
-          {/* Logo Section - Company branding with logo image and gradient text tagline */}
+          {/* Logo Section */}
           <div className="flex flex-col gap-3">
-            {/* Logo link that navigates to home page */}
             <Link
               to="/"
               className="flex items-center gap-2 cursor-pointer hover:opacity-90 transition w-fit"
@@ -42,27 +36,23 @@ export const Footer = () => {
                 alt="Logo"
                 className="h-12 w-12 object-contain"
               />
-              {/* Brand name with cyan to yellow gradient */}
               <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-yellow-400">
                 GameVerse
               </span>
             </Link>
-            {/* Brand tagline */}
             <p className="text-sm text-gray-500 leading-relaxed">
               Your ultimate destination for gaming excellence and unbeatable
               prices.
             </p>
           </div>
 
-          {/* Quick Links Section - Primary navigation shortcuts to main pages */}
+          {/* Quick Links */}
           <div>
             <h4 className="text-yellow-400 font-bold mb-4 text-sm uppercase tracking-wide">
               Quick Links
             </h4>
-            {/* Navigation links with active state highlighting */}
             <nav className="flex flex-col gap-2">
               {navLinks.map((link) => {
-                // Check if current path matches link to determine active state
                 const isActive = location.pathname === link.to.split("#")[0];
                 return (
                   <Link
@@ -79,37 +69,30 @@ export const Footer = () => {
             </nav>
           </div>
 
-          {/* Support Section - Help resources including email, FAQ, and policy links */}
+          {/* Support Section */}
           <div>
             <h4 className="text-yellow-400 font-bold mb-4 text-sm uppercase tracking-wide">
               Support
             </h4>
             <div className="flex flex-col gap-2 text-sm">
-              {/* Email contact link */}
               <a
                 href="mailto:nicolemisuraca@outlook.it"
                 className="text-gray-400 hover:text-cyan-400 transition"
               >
                 nicolemisuraca@outlook.it
               </a>
-
-              {/* FAQ page link */}
               <a
                 href="/faq-page"
                 className="text-gray-400 hover:text-cyan-400 transition"
               >
                 FAQ
               </a>
-
-              {/* Terms and Conditions link */}
               <a
                 href="#"
                 className="text-gray-400 hover:text-cyan-400 transition"
               >
                 Terms & Conditions
               </a>
-
-              {/* Privacy Policy link */}
               <a
                 href="#"
                 className="text-gray-400 hover:text-cyan-400 transition"
@@ -119,14 +102,12 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* Social Media Section - Links to external social platforms with brand colors */}
+          {/* Social Media Section */}
           <div>
             <h4 className="text-yellow-400 font-bold mb-4 text-sm uppercase tracking-wide">
               Follow Us
             </h4>
-            {/* Social media icons flex container */}
             <div className="flex gap-6">
-              {/* Facebook link with official brand color */}
               <a
                 href="https://facebook.com"
                 target="_blank"
@@ -137,8 +118,6 @@ export const Footer = () => {
               >
                 <FaFacebookF size={24} />
               </a>
-
-              {/* Instagram link with official brand color */}
               <a
                 href="https://instagram.com"
                 target="_blank"
@@ -149,8 +128,6 @@ export const Footer = () => {
               >
                 <FaInstagram size={24} />
               </a>
-
-              {/* X (Twitter) link with official brand color */}
               <a
                 href="https://twitter.com"
                 target="_blank"
@@ -161,8 +138,6 @@ export const Footer = () => {
               >
                 <FaXTwitter size={24} />
               </a>
-
-              {/* YouTube link with official brand color */}
               <a
                 href="https://youtube.com"
                 target="_blank"
@@ -173,8 +148,6 @@ export const Footer = () => {
               >
                 <FaYoutube size={24} />
               </a>
-
-              {/* Discord link with official brand color */}
               <a
                 href="https://discord.com"
                 target="_blank"
@@ -185,8 +158,6 @@ export const Footer = () => {
               >
                 <FaDiscord size={24} />
               </a>
-
-              {/* Twitch link with official brand color */}
               <a
                 href="https://twitch.tv"
                 target="_blank"
@@ -201,22 +172,18 @@ export const Footer = () => {
           </div>
         </div>
 
-        {/* Divider Line - Visual separator between main footer content and bottom footer */}
+        {/* Divider */}
         <div className="border-t border-gray-800 my-8"></div>
 
-        {/* Bottom Footer - Copyright year, brand name, and company tagline */}
+        {/* Bottom Footer */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs md:text-sm text-gray-500">
-          {/* Copyright notice with dynamic year */}
           <p>
             &copy; {new Date().getFullYear()}{" "}
             <span className="text-yellow-400 font-bold">GameVerse</span>. All
             rights reserved.
           </p>
-
-          {/* Company tagline with red heart emoji */}
           <p>
-            Made with <span className="text-red-500">❤️</span> by gamers, for
-            gamers.
+            Made with <Heart className="inline-block text-red-500 w-4 h-4 -mt-0.5" fill="currentColor" /> by gamers, for gamers.
           </p>
         </div>
       </div>

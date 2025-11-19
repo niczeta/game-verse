@@ -2,7 +2,15 @@ import React, { useState, useRef, useEffect } from "react";
 import { CustomInput } from "../form-components/CustomInput";
 import { CustomTextarea } from "../form-components/CustomTextarea";
 import { Button } from "../form-components/Button";
-import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaClock } from "react-icons/fa";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  Check,
+  Loader2,
+  Send,
+} from "lucide-react";
 
 type FormData = {
   name: string;
@@ -23,11 +31,8 @@ export const ContactPage: React.FC = () => {
   const [errors, setErrors] = useState<Errors>({});
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // Ref per scroll al messaggio di successo
   const messageRef = useRef<HTMLDivElement>(null);
 
-  // Gestione cambi input
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -36,7 +41,6 @@ export const ContactPage: React.FC = () => {
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  // Validazione campi
   const validateForm = (): Errors => {
     const newErrors: Errors = {};
     if (!formData.name.trim()) newErrors.name = "Name is required";
@@ -47,7 +51,6 @@ export const ContactPage: React.FC = () => {
     return newErrors;
   };
 
-  // Submit del form
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -60,11 +63,9 @@ export const ContactPage: React.FC = () => {
       setIsLoading(false);
       setSuccessMessage("Thank you! Your message has been sent.");
       setFormData({ name: "", email: "", message: "" });
-      // Scroll gestito da useEffect
     }, 1500);
   };
 
-  // Scroll al successo solo se necessario
   useEffect(() => {
     if (successMessage && messageRef.current) {
       const rect = messageRef.current.getBoundingClientRect();
@@ -92,6 +93,7 @@ export const ContactPage: React.FC = () => {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Info */}
           <div className="flex flex-col gap-8">
+            {/* ...info columns invariato... */}
             <div>
               <h2 className="text-2xl font-bold text-yellow-400 mb-8">
                 Contact Information
@@ -99,7 +101,7 @@ export const ContactPage: React.FC = () => {
             </div>
             <div className="flex gap-4 items-start">
               <div className="p-3 bg-cyan-500/20 rounded-lg">
-                <FaEnvelope className="text-cyan-400 text-xl" />
+                <Mail className="text-cyan-400 w-6 h-6" />
               </div>
               <div>
                 <h3 className="font-semibold text-lg mb-1">Email</h3>
@@ -108,7 +110,7 @@ export const ContactPage: React.FC = () => {
             </div>
             <div className="flex gap-4 items-start">
               <div className="p-3 bg-indigo-500/20 rounded-lg">
-                <FaPhone className="text-indigo-400 text-xl" />
+                <Phone className="text-indigo-400 w-6 h-6" />
               </div>
               <div>
                 <h3 className="font-semibold text-lg mb-1">Phone</h3>
@@ -117,7 +119,7 @@ export const ContactPage: React.FC = () => {
             </div>
             <div className="flex gap-4 items-start">
               <div className="p-3 bg-purple-500/20 rounded-lg">
-                <FaMapMarkerAlt className="text-purple-400 text-xl" />
+                <MapPin className="text-purple-400 w-6 h-6" />
               </div>
               <div>
                 <h3 className="font-semibold text-lg mb-1">Location</h3>
@@ -126,7 +128,7 @@ export const ContactPage: React.FC = () => {
             </div>
             <div className="flex gap-4 items-start">
               <div className="p-3 bg-yellow-500/20 rounded-lg">
-                <FaClock className="text-yellow-400 text-xl" />
+                <Clock className="text-yellow-400 w-6 h-6" />
               </div>
               <div>
                 <h3 className="font-semibold text-lg mb-1">Business Hours</h3>
@@ -154,45 +156,64 @@ export const ContactPage: React.FC = () => {
                   ref={messageRef}
                   className="flex flex-col items-center text-green-300 bg-green-900/40 border border-green-600 rounded-lg p-4 text-center mb-6 animate-bounce"
                 >
-                  <svg width="34" height="34" fill="currentColor" className="mb-2">
-                    <path d="M15.32 23.47l-6.18-6.18a1.25 1.25 0 111.77-1.77l5.29 5.29 9.68-9.68a1.25 1.25 0 111.77 1.77l-10.47 10.47a1.25 1.25 0 01-1.77 0z" />
-                  </svg>
+                  <Check className="text-green-400 w-8 h-8 mb-2" />
                   {successMessage}
                 </div>
               )}
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5" autoComplete="on">
                 <CustomInput
                   label="Full Name"
-                  type="text"
+                  id="contact-name"
                   name="name"
+                  type="text"
+                  autoComplete="name"
                   placeholder="John Doe"
                   value={formData.name}
                   onChange={handleChange}
                   error={errors.name}
+                  labelClassName="text-gray-200 text-sm font-semibold"
                   className="focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400 transition-all"
                 />
                 <CustomInput
                   label="Email Address"
-                  type="text"
+                  id="contact-email"
                   name="email"
+                  type="email"
+                  autoComplete="email"
                   placeholder="you@example.com"
                   value={formData.email}
                   onChange={handleChange}
                   error={errors.email}
+                  labelClassName="text-gray-200 text-sm font-semibold"
                   className="focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400 transition-all"
                 />
                 <CustomTextarea
                   label="Message"
+                  id="contact-message"
                   name="message"
+                  autoComplete="off"
                   placeholder="Write your message here... (min 10 characters)"
                   value={formData.message}
                   onChange={handleChange}
                   error={errors.message}
+                  labelClassName="text-gray-200 text-sm font-semibold"
                   className="focus:border-purple-400 focus:ring-2 focus:ring-purple-400 transition-all"
                 />
                 <Button
                   type="submit"
-                  text={isLoading ? "⏳ Sending..." : "🚀 Send Message"}
+                  text={
+                    isLoading ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <Loader2 className="animate-spin w-5 h-5" />
+                        Sending...
+                      </span>
+                    ) : (
+                      <span className="flex items-center justify-center gap-2">
+                        <Send className="w-5 h-5" />
+                        Send Message
+                      </span>
+                    )
+                  }
                   variant="gradient"
                   size="large"
                   className="w-full transition-transform"

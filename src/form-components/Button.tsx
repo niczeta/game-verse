@@ -1,12 +1,9 @@
-// Reusable Button component with multiple size, color, and variant options
-// Uses clsx for conditional class composition and supports icons, custom styling, and accessibility
-
 import clsx from "clsx";
 import type { ButtonHTMLAttributes, ReactNode, MouseEvent } from "react";
 
 // Type definition for Button component props
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  text?: string;
+  text?: ReactNode; // <--- CAMBIATO da string a ReactNode
   onClick?: (e?: MouseEvent<HTMLButtonElement>) => void;
   type?: "button" | "submit" | "reset";
   children?: ReactNode;
@@ -58,9 +55,7 @@ export const Button = ({
       "bg-cyan-500 text-white border border-cyan-500 hover:bg-cyan-400":
         color === "primary" && variant !== "gradient" && variant !== "outline",
       "bg-white text-cyan-500 border border-cyan-400 hover:bg-cyan-50":
-        color === "secondary" &&
-        variant !== "gradient" &&
-        variant !== "outline",
+        color === "secondary" && variant !== "gradient" && variant !== "outline",
       "bg-red-600 text-white hover:bg-red-700":
         color === "danger" && variant !== "gradient" && variant !== "outline",
 

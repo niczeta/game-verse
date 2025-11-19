@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { FaArrowLeft, FaShoppingCart, FaPlay, FaCheck } from "react-icons/fa";
+import { ArrowLeft, ShoppingCart, Play, Check } from "lucide-react";
 import { Button } from "../form-components/Button";
 import {
   featuredGames,
@@ -18,7 +18,6 @@ function getYoutubeEmbedUrl(url: string) {
   return match ? `https://www.youtube.com/embed/${match[1]}` : null;
 }
 
-// Gather all game sources together
 const allGames = [
   ...featuredGames,
   ...PCGames,
@@ -32,7 +31,6 @@ export const GameDetailPage = () => {
   const navigate = useNavigate();
   const game = allGames.find((g) => String(g.id) === id);
 
-  // Cart state management
   const addToCart = useAddToCart();
   const [isAdded, setIsAdded] = useState(() => (game ? isItemInCart(game.id) : false));
   useEffect(() => {
@@ -75,7 +73,7 @@ export const GameDetailPage = () => {
         {/* Header section */}
         <div className="flex items-center justify-between gap-2 mb-8 flex-wrap">
           <Button
-            icon={<FaArrowLeft />}
+            icon={<ArrowLeft />}
             iconPosition="left"
             text="Back"
             variant="outline"
@@ -139,7 +137,7 @@ export const GameDetailPage = () => {
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none group-hover:opacity-0 transition">
-                <FaPlay className="text-cyan-400 text-4xl bg-black/30 rounded-full p-4" />
+                <Play className="text-cyan-400 w-10 h-10 bg-black/30 rounded-full p-2" />
               </div>
             </div>
           ) : (
@@ -151,7 +149,7 @@ export const GameDetailPage = () => {
           )}
         </div>
 
-        {/* Gallery screenshots -- LARGE */}
+        {/* Gallery screenshots */}
         {game.screenshots && game.screenshots.length > 0 && (
           <div className="flex gap-4 justify-center mb-8">
             {game.screenshots.map((src, i) => (
@@ -182,7 +180,7 @@ export const GameDetailPage = () => {
           {isAdded ? (
             <Button
               text="In Cart"
-              icon={<FaCheck />}
+              icon={<Check />}
               iconPosition="left"
               disabled
               className="w-full max-w-md bg-gradient-to-r from-green-500 to-green-600 text-white cursor-not-allowed mb-2"
@@ -190,7 +188,7 @@ export const GameDetailPage = () => {
           ) : (
             <Button
               text="Add to Cart"
-              icon={<FaShoppingCart />}
+              icon={<ShoppingCart />}
               iconPosition="left"
               onClick={handleAddToCart}
               size="large"

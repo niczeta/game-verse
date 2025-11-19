@@ -2,7 +2,7 @@
 // Displays checkbox with label and optional error message for form validation feedback
 
 // Type definition for Checkbox component props
-type CheckboxProps = {
+type CustomCheckboxProps = {
   id: string; // Unique identifier for checkbox input
   name: string; // Name attribute for form submission
   checked: boolean; // Current checked state of the checkbox
@@ -11,14 +11,14 @@ type CheckboxProps = {
   error?: string; // Optional error message displayed below checkbox for validation
 };
 
-export const Checkbox = ({
+export const CustomCheckbox = ({
   id,
   name,
   checked,
   onChange,
   label,
   error,
-}: CheckboxProps) => (
+}: CustomCheckboxProps) => (
   <div className="flex flex-col gap-1 ml-1">
     {/* Checkbox and label container */}
     <div className="flex items-center gap-3">
