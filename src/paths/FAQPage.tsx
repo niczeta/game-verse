@@ -16,7 +16,6 @@ type FAQItem = {
 };
 
 const faqData: FAQItem[] = [
-  // ... (tutti i tuoi item come sopra, identici)
   // General
   { id: 1, category: "general", question: "What is GameVerse?", answer: "GameVerse is a digital platform offering thousands of games across all platforms (PC, PlayStation, Xbox, Nintendo Switch) at unbeatable prices. We partner with leading publishers to bring you legitimate, high-quality games." },
   { id: 2, category: "general", question: "How do I get started?", answer: "Simply create an account, browse our catalog, add games to your cart, and proceed to checkout. Once purchased, you'll receive your game keys via email immediately." },
@@ -82,7 +81,7 @@ const FAQAccordion = () => {
                 />
               </button>
               {expandedId === item.id && (
-                <div className="px-5 pb-5 border-t border-neutral-700">
+                <div className="px-5 pb-5 border-t border-neutral-700 pt-5">
                   <p className="text-gray-300 leading-relaxed">{item.answer}</p>
                 </div>
               )}
@@ -103,8 +102,7 @@ const FAQAccordion = () => {
             Frequently Asked Questions
           </h1>
           <p className="text-xl text-neutral-200 max-w-2xl mx-auto">
-            Find answers to common questions about GameVerse, purchases, and
-            more.
+            Find answers to common questions about GameVerse, purchases, and more.
           </p>
         </div>
       </div>
@@ -119,8 +117,7 @@ const FAQAccordion = () => {
               Still Need Help?
             </h3>
             <p className="text-gray-300 mb-6">
-              Didn't find your answer? Contact our support team, and we'll be
-              happy to help!
+              Didn't find your answer? Contact our support team, and we'll be happy to help!
             </p>
             <a
               href="/contact-page"
